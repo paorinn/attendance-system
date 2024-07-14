@@ -17,7 +17,16 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
-
+    public function rules()
+    {
+        return [
+            'password' => [
+                'required',
+                'regex:/\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i',
+                'on' => 'create'
+            ]
+        ];
+    }
     public function create(array $input): User
     {
         Validator::make($input, [
