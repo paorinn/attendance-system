@@ -14,7 +14,7 @@
         <header class="header">
             <h1 class="header__heading">Atte</h1>
             <a href="/">ホーム</a>
-            <a href="/list">日付一覧</a>
+            <a href="/date">日付一覧</a>
             @if (Auth::check())
             <form action="/logout" method="post" class="form">
                 @csrf
