@@ -6,25 +6,33 @@
 
 @section('content')
 <div class="attendance-form">
-    @auth
-    <div class="user-info">
-        {{ Auth::user()->name }}
-    </div>
-    @endauth
+    <input type="date" value="<?php echo date('Y-m-d', strtotime('-1 day')); ?>">
 
     <div class="container">
-    @foreach ($itmes as $itme)
-    <div class="attendance">
-      <table>
-        <th>{{$itme->user_name}}</th>
-        <tr><td>出勤</td><td>{{$itme->punchIn}}</td></tr>
-        <tr><td>休憩開始</td><td>{{$itme->breakIn}}</td></tr>
-        <tr><td>休憩終了</td><td>{{$itme->breakOut}}</td></tr>
-        <tr><td>退勤</td><td>{{$itme->punchOut}}</td></tr>
-        <tr><td>勤務時間</td><td>{{$itme->workTime}}</td></tr>
-      </table>
+        <div class="attendance">
+            <table>
+                <thead>
+                    <tr>
+                        <th>名前</th>
+                        <th>勤務開始</th>
+                        <th>勤務終了</th>
+                        <th>休憩時間</th>
+                        <th>勤務時間</th>
+                    </tr>
+                </thead>
+                @foreach ($items as $item)
+                    <tbody>
+                        <tr>
+                            <td>{{ $item['user_name'] }}</td>
+                            <td>{{ $item['punchIn'] }}</td>
+                            <td>{{ $item['punchOut'] }}</td>
+                            <td>{{ gmdate("H:I", $item['totalBreakTime']) }}</td>
+                            <td>{{ gmdate("H:I", $item['workTime']) }}</td>
+                        </tr>
+                    </tbody>
+                    @endforeach
+            </table>
+        </div>
     </div>
-    @endforeach
-  </div>
 </div>
 @endsection
