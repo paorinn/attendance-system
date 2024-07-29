@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Time extends Model
 {
     protected $table = 'attendance';
-    
     protected $fillable =['user_id','user_name','date','clockIn','clockOut','breakIn','breakOut','workTime'];
 
     //リレーション

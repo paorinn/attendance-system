@@ -12,11 +12,12 @@ class ListController extends Controller
 {  
     public function date()  
     {  
-        $user = Auth::user();  
-        $attendances = Time::where('user_id', $user->id)  
-            ->orderBy('date', 'desc')  
-            ->orderBy('clockIn', 'desc')  
-            ->get();  
+        $user = Auth::user();
+        $date = request()->input('date');
+        $attendances = Time::where('user_id', $user->id)
+            ->orderBy('date', 'desc')
+            ->orderBy('clockIn', 'desc')
+            ->get();
 
         $items = $attendances->groupBy('date')->map(function ($dateAttendances, $date) {  
             $totalBreakTime = 0;  
@@ -28,8 +29,7 @@ class ListController extends Controller
                 }  
             }  
 
-            $firstAttendance = $dateAttendances->first();  
-
+            $firstAttendance = $dateAttendances->first();
             $punchIn = null;  
             if ($firstAttendance && $firstAttendance->clockIn instanceof Carbon\Carbon) {  
                 $punchIn = $firstAttendance->clockIn->format('H:i');  
@@ -39,7 +39,7 @@ class ListController extends Controller
                 'user_name' => $dateAttendances->first()->user_name,  
                 'date' => $date,  
                 'punchIn' => $punchIn,  
-                'punchOut' => $dateAttendances->last()->clockOut ? $dateAttendances->last()->clockOut->format('H:i') : null,  
+                'punchOut' => $dateAttendances->count() > 0 && $dateAttendances->last()->clockOut instanceof Carbon\Carbon ? $dateAttendances->last()->clockOut->format('H:i') : null,  
                 'totalBreakTime' => $totalBreakTime,  
                 'workTime' => $dateAttendances->sum('workTime'),  
             ];  

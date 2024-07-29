@@ -67,7 +67,7 @@ class AttendanceController extends Controller
         $breakIn = Carbon::parse($latestRecord->breakIn);
         $breakOut = Carbon::parse($latestRecord->breakOut);
 
-        $stayTime = $punchIn->diffInMinutes($now);
+        $stayTime = $clockIn->diffInMinutes($now);
         $breakTime = $breakIn->diffInMinutes($breakOut);
         $workingMinute = $stayTime - $breakTime;
         $workingHour = ceil($workingMinute / 15) * 0.25;
