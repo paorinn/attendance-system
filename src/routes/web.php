@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ListController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\RegisteredUserController;
@@ -17,6 +18,14 @@ use App\Http\Controllers\RegisteredUserController;
 */
 Route::middleware('auth')->group(function () {
     Route::get('/', [AttendanceController::class, 'index']);
+
+    Route::get('/date', [ListController::class, 'date']);
+    //出退勤時刻
+    Route::post('/clock-in', [AttendanceController::class, 'clockIn']);
+    Route::post('/clock-out', [AttendanceController::class, 'clockOut']);
+    //休憩時刻
+    Route::post('/break-in', [AttendanceController::class, 'breakIn']);
+    Route::post('/break-out', [AttendanceController::class, 'breakOut']);
 });
 
 Route::middleware('guest')->group(function() {
@@ -26,7 +35,8 @@ Route::middleware('guest')->group(function() {
 
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
 });
 
-
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
