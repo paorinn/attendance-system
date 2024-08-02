@@ -11,42 +11,37 @@ use App\Models\User;
 class ListController extends Controller  
 {  
     public function date()  
-    {  
-        $user = Auth::user();
-        $date = request()->input('date');
-        $attendances = Time::where('user_id', $user->id)
-            ->orderBy('date', 'desc')
-            ->orderBy('clockIn', 'desc')
-            ->get();
+{  
+    $user = Auth::user();  
+    $attendances = Time::where('user_id', $user->id)  
+        ->with('user') // 'user'リレーションをロードする  
+        ->orderBy('clockIn', 'desc')  
+        ->get();  
 
-        $items = $attendances->groupBy('date')->map(function ($dateAttendances, $date) {  
+    $items = $attendances->groupBy(function($attendance) {  
+        return Carbon::parse($attendance->clockIn)->toDateString();  
+    })->map(function($dateAttendances, $date) {  
+        return $dateAttendances->map(function($attendance) {  
+            $breakInTime = $attendance->breakIn ? $attendance->breakIn->format('H:i') : null;  
+            $breakOutTime = $attendance->breakOut ? $attendance->breakOut->format('H:i') : null;  
+
             $totalBreakTime = 0;  
-            foreach ($dateAttendances as $attendance) {  
-                $breakInTime = $attendance->breakIn ? Carbon::parse($attendance->breakIn) : null;  
-                $breakOutTime = $attendance->breakOut ? Carbon::parse($attendance->breakOut) : null;  
-                if ($breakInTime && $breakOutTime) {  
-                    $totalBreakTime += $breakInTime->diffInMinutes($breakOutTime);  
-                }  
-            }  
-
-            $firstAttendance = $dateAttendances->first();
-            $punchIn = null;  
-            if ($firstAttendance && $firstAttendance->clockIn instanceof Carbon\Carbon) {  
-                $punchIn = $firstAttendance->clockIn->format('H:i');  
+            if ($attendance->breakIn && $attendance->breakOut) {  
+                $totalBreakTime = $attendance->breakOut->diffInSeconds($attendance->breakIn);  
             }  
 
             return [  
-                'user_name' => $dateAttendances->first()->user_name,  
-                'date' => $date,  
-                'punchIn' => $punchIn,  
-                'punchOut' => $dateAttendances->count() > 0 && $dateAttendances->last()->clockOut instanceof Carbon\Carbon ? $dateAttendances->last()->clockOut->format('H:i') : null,  
+                'user_name' => $attendance->user->name, // 'user.name'を使用する  
+                'punchIn' => $attendance->clockIn->format('H:i'),  
+                'breakIn' => $breakInTime,  
+                'breakOut' => $breakOutTime,  
+                'punchOut' => $attendance->clockOut ? $attendance->clockOut->format('H:i') : null,  
+                'workTime' => $attendance->workTime,  
                 'totalBreakTime' => $totalBreakTime,  
-                'workTime' => $dateAttendances->sum('workTime'),  
             ];  
-        });  
+        })->values()->all();  
+    })->values()->all();
 
-        return view('attendance', [  
-            'items' => $items  
-        ]);  
-    }  
+    return view('attendance', compact('items'));  
+}
 }

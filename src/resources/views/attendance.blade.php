@@ -20,14 +20,14 @@
                         <th>勤務時間</th>
                     </tr>
                 </thead>
-                @foreach ($items as $item)
+                @foreach ($items[0] as $item)
                     <tbody>
                         <tr>
                             <td>{{ $item['user_name'] }}</td>
                             <td>{{ $item['punchIn'] }}</td>
                             <td>{{ $item['punchOut'] }}</td>
                             <td>{{ gmdate("H:I", $item['totalBreakTime']) }}</td>
-                            <td>{{ gmdate("H:I", $item['workTime']) }}</td>
+                            <td>{{ $item['workTime'] }}</td>
                         </tr>
                     </tbody>
                     @endforeach

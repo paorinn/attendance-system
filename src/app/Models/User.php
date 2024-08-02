@@ -53,4 +53,8 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = Hash::make($value);
     }
+    public function times()
+    {
+        return $this->hasMany(Time::class, 'user_id');
+    }
 }
