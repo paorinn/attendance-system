@@ -18,6 +18,8 @@ class Time extends Model
         'breakOUt' =>'datetime:H:i',
     ];
 
+    protected $dates =['date', 'clockIn', 'clockOut', 'breakIn', 'breakOUt'];
+
     //リレーション
     public function user()
     {

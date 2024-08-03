@@ -26,7 +26,7 @@
                             <td>{{ $item['user_name'] }}</td>
                             <td>{{ $item['punchIn'] }}</td>
                             <td>{{ $item['punchOut'] }}</td>
-                            <td>{{ gmdate("H:I", $item['totalBreakTime']) }}</td>
+                            <td></td>
                             <td>{{ $item['workTime'] }}</td>
                         </tr>
                     </tbody>
