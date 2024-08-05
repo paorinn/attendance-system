@@ -37,7 +37,8 @@ DB_PASSWORD=laravel_pass
   <li>MySQL8.0.26
 </dl>
 <h2>ER図</h2>
-<img width="487" alt="スクリーンショット 2024-08-04 1 42 09" src="https://github.com/user-attachments/assets/b0613bc9-a639-4a57-a09f-1f989fbeea37">
+<img width="525" alt="スクリーンショット 2024-08-06 1 06 02" src="https://github.com/user-attachments/assets/6d3cd3d1-f0fe-442c-a85b-d1e032e34981">
+
 
 <h2>URL</h2>
 <dl>
