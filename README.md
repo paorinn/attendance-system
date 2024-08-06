@@ -2,7 +2,7 @@
 <h2>環境構築</h2>
 <h3>Dockerビルド</h3>
 <ol>
-<li><pre>git clone git@github.com:estra-inc/confirmation-test-contact-form.git</pre>
+<li><pre>git clone git@github.com:estra-inc/attendance-system.git</pre>
 <li>DockerDesktopアプリを立ち上げる
 <li><pre>docker-compose up -d --build</pre></li>
 </ol>
